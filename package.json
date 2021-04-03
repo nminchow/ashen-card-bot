@@ -1,0 +1,22 @@
+{
+  "name": "ashes-bot",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "author": "nminchow <noelminchow@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "discord.js-commando": "^0.12.3",
+    "fuse.js": "^6.4.6",
+    "got": "^11.8.2"
+  },
+  "scripts": {
+    "start": "node src/index.js --harmony-top-level-await",
+    "lint": "eslint src/"
+  },
+  "devDependencies": {
+    "eslint": "7.2.0",
+    "eslint-config-airbnb-base": "14.2.1",
+    "eslint-plugin-import": "2.22.1"
+  }
+}
