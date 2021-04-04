@@ -20,6 +20,6 @@ module.exports = class CardCommand extends Command {
   }
 
   run(message, { text }) {
-    return bestMatch(message, text, this.client.data);
+    return bestMatch(message, text, this.client);
   }
 };

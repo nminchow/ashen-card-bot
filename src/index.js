@@ -4,8 +4,6 @@ const Fuse = require('fuse.js');
 const { token } = require('../config.json');
 const getCards = require('./setup/get-cards');
 
-console.log(getCards);
-
 const client = new CommandoClient({
   commandPrefix: '!!',
   owner: '827967142435225631',

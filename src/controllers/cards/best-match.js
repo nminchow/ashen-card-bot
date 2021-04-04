@@ -1,11 +1,10 @@
 const card = require('../../views/card');
 
-module.exports = (message, text, { cardFuse }, fullArt = false) => {
-  console.log(text);
+module.exports = (message, text, client, fullArt = false) => {
+  const { data: { cardFuse } } = client;
   const result = cardFuse.search(text)[0];
-  console.log(result);
   if (result) {
-    return message.embed(card(result.item, fullArt));
+    return message.embed(card(result.item, client, fullArt));
   }
   return message.say('card not found');
 };
