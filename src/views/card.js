@@ -12,6 +12,9 @@ module.exports = ({
   cost,
   type,
   placement,
+  battlefield,
+  life,
+  spellboard,
 }, client, fullArt) => {
   const url = `https://ashes.live/cards/${stub}/`;
   const imgUrl = `https://cdn.ashes.live/images/cards/${stub}.jpg`;
@@ -36,6 +39,10 @@ module.exports = ({
     embed.setTitle(title);
     embed.setDescription(parseText(text, client));
     embed.setThumbnail(imgUrl);
+    Object.entries({ battlefield, life, spellboard }).map(([key, value]) => {
+      if (!value) return;
+      embed.addField(key, value, true);
+    });
     if (cost) {
       cost.map((costItem, index) => {
         if (Array.isArray(costItem)) {
