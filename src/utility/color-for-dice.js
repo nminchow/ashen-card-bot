@@ -1,5 +1,5 @@
 const mapping = {
-  'ceremonial': '#ee3342',
+  'ceremonial': '#111821',
   'charm': '#f34f98',
   'divine': '#b58a2b',
   'illusion': '#490d67',

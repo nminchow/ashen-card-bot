@@ -29,10 +29,11 @@ module.exports = ({
 
   const addField = (index, item, inline = false, or = false) => {
     const text = or ? `${item} OR` : item;
+    const subbedText = parseText(text, client);
     if (index === 0 ) {
-      return embed.addField('Cost', text, inline);
+      return embed.addField('Cost', subbedText, inline);
     }
-    embed.addField('\u200B', text, inline);
+    embed.addField('\u200B', subbedText, inline);
   };
 
   if (fullArt) {
