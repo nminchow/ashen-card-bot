@@ -15,6 +15,9 @@ module.exports = ({
   battlefield,
   life,
   spellboard,
+  attack,
+  recover,
+  copies,
 }, client, fullArt) => {
   const url = `https://ashes.live/cards/${stub}/`;
   const imgUrl = `https://cdn.ashes.live/images/cards/${stub}.jpg`;
@@ -39,8 +42,8 @@ module.exports = ({
     embed.setTitle(title);
     embed.setDescription(parseText(text, client));
     embed.setThumbnail(imgUrl);
-    Object.entries({ battlefield, life, spellboard }).map(([key, value]) => {
-      if (!value) return;
+    Object.entries({ battlefield, attack, life, spellboard, recover }).map(([key, value]) => {
+      if (value === undefined) return;
       embed.addField(key, value, true);
     });
     if (cost) {
@@ -54,6 +57,9 @@ module.exports = ({
           addField(index, costItem);
         }
       });
+    }
+    if (copies) {
+      embed.addField("Copies", copies);
     }
   }
   return embed;
