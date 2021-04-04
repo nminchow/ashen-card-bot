@@ -1,14 +1,14 @@
 const Discord = require('discord.js');
 const parseText = require('../utility/parse-text');
 const colorForDice = require('../utility/color-for-dice');
-
+const { buildCardUrl, buildImgUrl, buildDiceUrl } = require('../utility/urls');
 
 module.exports = ({
   name,
   stub,
   dice,
   text,
-  release: { name: releaseName },
+  release: { name: releaseName } = {},
   cost,
   type,
   placement,
@@ -19,21 +19,27 @@ module.exports = ({
   recover,
   copies,
 }, client, fullArt) => {
-  const url = `https://ashes.live/cards/${stub}/`;
-  const imgUrl = `https://cdn.ashes.live/images/cards/${stub}.jpg`;
-  const diceUrl = dice ? `https://nminchow.github.io/ashen-card-bot/dice-2/${dice}.png`: null;
   const embed = new Discord.MessageEmbed();
+  const diceUrl = buildDiceUrl(dice);
+  embed.setColor(colorForDice(dice));
+  if (type === 'reference') {
+    embed.setAuthor(name, diceUrl, stub);
+    embed.setImage(stub);
+    return embed;
+  }
+
+  const url = buildCardUrl(stub);
+  const imgUrl = buildImgUrl(stub);
   embed.setFooter(releaseName);
   embed.setAuthor(name, diceUrl, url);
-  embed.setColor(colorForDice(dice));
 
   const addField = (index, item, inline = false, or = false) => {
     const text = or ? `${item} OR` : item;
     const subbedText = parseText(text, client);
-    if (index === 0 ) {
+    if (index === 0) {
       return embed.addField('Cost', subbedText, inline);
     }
-    embed.addField('\u200B', subbedText, inline);
+    return embed.addField('\u200B', subbedText, inline);
   };
 
   if (fullArt) {
@@ -43,15 +49,17 @@ module.exports = ({
     embed.setTitle(title);
     embed.setDescription(parseText(text, client));
     embed.setThumbnail(imgUrl);
-    Object.entries({ battlefield, attack, life, spellboard, recover }).map(([key, value]) => {
+    Object.entries({
+      battlefield, attack, life, spellboard, recover,
+    }).forEach(([key, value]) => {
       if (value === undefined) return;
       embed.addField(key, value, true);
     });
     if (cost) {
-      cost.map((costItem, index) => {
+      cost.forEach((costItem, index) => {
         if (Array.isArray(costItem)) {
-          costItem.map((orCost, innerIndex) => {
-            last = innerIndex == costItem.length - 1;
+          costItem.forEach((orCost, innerIndex) => {
+            const last = innerIndex === costItem.length - 1;
             addField(index + innerIndex, orCost, true, !last);
           });
         } else {
@@ -60,7 +68,7 @@ module.exports = ({
       });
     }
     if (copies) {
-      embed.addField("Copies", copies);
+      embed.addField('Copies', copies);
     }
   }
   return embed;

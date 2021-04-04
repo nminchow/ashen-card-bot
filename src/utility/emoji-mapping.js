@@ -1,0 +1,20 @@
+module.exports = {
+  main: '408070378204954629',
+  side: '408070377969811456',
+  basic: '408070376967503874',
+  exhaust: '408070378498424842',
+  discard: '408070377911222273',
+  'sympathy:power': '408070378729242634',
+  'sympathy:class': '408070378435510272',
+  'natural:power': '408070378443898881',
+  'natural:class': '408070378771185664',
+  'illusion:power': '408070378288840705',
+  'illusion:class': '408070378464739328',
+  'divine:power': '408070378338910210',
+  'divine:class': '408070378645356554',
+  'charm:power': '408070378393567272',
+  'charm:class': '408070378204692480',
+  'ceremonial:power': '408070378393567282',
+  // 'ceremonial:power': '828338909804363796', // for testing
+  'ceremonial:class': '408070378448224256',
+};

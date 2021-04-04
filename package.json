@@ -8,7 +8,8 @@
     "discord.js": "^12.5.3",
     "discord.js-commando": "^0.12.3",
     "fuse.js": "^6.4.6",
-    "got": "^11.8.2"
+    "got": "^11.8.2",
+    "lodash": "^4.17.21"
   },
   "scripts": {
     "start": "node src/index.js",
