@@ -1,15 +1,16 @@
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
 const Fuse = require('fuse.js');
-const { token } = require('../config.json');
 const getCards = require('./setup/get-cards');
 const messageHandler = require('./utility/message-handler');
+require('dotenv').config();
 
 const commandPrefix = '!!';
 
 const client = new CommandoClient({
   commandPrefix: '!!',
   owner: '827967142435225631',
+  owner: process.env.owner,
 });
 
 const setupClient = (cards) => {
@@ -45,7 +46,7 @@ const setupClient = (cards) => {
 
   client.on('error', console.error);
 
-  client.login(token);
+  client.login(process.env.token);
 };
 
 getCards().then(setupClient);
