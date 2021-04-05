@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { byUUID, byId } = require('../../controllers/decks/fetch');
+const fetchDeck = require('../../controllers/decks/fetch');
 
 module.exports = class CardCommand extends Command {
   constructor(client) {
@@ -20,9 +20,6 @@ module.exports = class CardCommand extends Command {
   }
 
   run(message, { uuid }) {
-    if (Number.isNaN(uuid)) {
-      return byUUID(message, uuid, this.client);
-    }
-    return byId(message, uuid, this.client);
+    return fetchDeck(message, uuid, this.client);
   }
 };
