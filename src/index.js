@@ -9,7 +9,6 @@ const commandPrefix = '!!';
 
 const client = new CommandoClient({
   commandPrefix: '!!',
-  owner: '827967142435225631',
   owner: process.env.owner,
 });
 
