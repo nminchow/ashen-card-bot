@@ -24,10 +24,10 @@ const setupClient = (cards) => {
   client.registry
     .registerDefaultTypes()
     .registerGroups([
-      ['cards', 'card related commands'],
+      ['cards', 'card commands'],
     ])
     .registerGroups([
-      ['decks', 'card related commands'],
+      ['decks', 'deck commands'],
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()
