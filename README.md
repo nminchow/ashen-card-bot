@@ -9,12 +9,16 @@ The bot's documentation can be accessed by adding it to a server and issuing the
 
 ## Contributing
 
+The bot is built with [discord.js](https://discord.js.org/) and [commando](https://discordjs.guide/commando/).
+
+The project follows the commando convention for folder structure, with command handlers in the `/controllers` folder, embed generators in the `/view` folder, and general utilities in the `/utility` folder.
+
+### Running Locally
+
 Requirments:
 
 * node 14.16 (or nvm)
 * yarn
-
-### Running Locally
 
 First, create a `.env` file in the root of the directory with your dev bot's id and token, ex:
 
