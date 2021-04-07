@@ -6,7 +6,7 @@ const { buildCardUrl, buildImgUrl, buildDiceUrl } = require('../utility/urls');
 module.exports = ({
   name,
   stub,
-  dice,
+  dice: diceData,
   text,
   release: { name: releaseName } = {},
   cost,
@@ -20,6 +20,7 @@ module.exports = ({
   copies,
 }, client, fullArt) => {
   const embed = new Discord.MessageEmbed();
+  const dice = Array.isArray(diceData) ? diceData[0] : diceData;
   const diceUrl = buildDiceUrl(dice);
   embed.setColor(colorForDice(dice));
   if (type === 'reference') {

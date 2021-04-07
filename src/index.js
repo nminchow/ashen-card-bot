@@ -13,7 +13,10 @@ const client = new CommandoClient({
 });
 
 const setupClient = (cards) => {
-  const cardFuse = new Fuse(cards, { keys: ['name', 'stub'] });
+  const cardFuse = new Fuse(cards, {
+    keys: ['name', 'stub', 'type'],
+    includeScore: true,
+  });
 
   client.data = {
     cards,
@@ -27,6 +30,9 @@ const setupClient = (cards) => {
     ])
     .registerGroups([
       ['decks', 'deck commands'],
+    ])
+    .registerGroups([
+      ['rules', 'rule commands'],
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()

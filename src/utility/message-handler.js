@@ -1,4 +1,6 @@
-const bestMatch = require('../controllers/cards/best-match');
+const bestMatch = require('../controllers/shared/best-match');
+const rule = require('../views/rule');
+const searchFuse = require('../controllers/shared/search-fuse');
 const fetchDeck = require('../controllers/decks/fetch');
 const removeDelineators = require('./remove-delineators');
 const cardList = require('../views/list');
@@ -16,12 +18,20 @@ module.exports = (message, client) => {
     hits.forEach(callMatch(false));
     artHits.forEach(callMatch(true));
   } else {
-    message.channel.send({ embed: cardList([...hits, ...artHits], client) });
+    const coalesce = (hit) => (searchFuse(hit, client)[0] || {}).item || { miss: hit };
+    const lookups = [...hits, ...artHits].map(coalesce);
+    const allHits = lookups.filter(({ type }) => type);
+    const misses = lookups.filter(({ type }) => !type);
+    const cards = allHits.filter(({ type }) => type !== 'rule');
+    const rules = allHits.filter(({ type }) => type === 'rule');
+
+    message.channel.send({ embed: cardList(cards, misses) });
+    rules.map(rule).forEach((embed) => message.channel.send({ embed }));
   }
 
   // gotchya here - 'share' is processed as a deck id if not checked for first
-  const [,uuidMatch] = message.content.match(/https:\/\/ashes\.live\/decks\/share\/(.+?)\//) || [];
-  const [,idMatch] = message.content.match(/https:\/\/ashes\.live\/decks\/(.+?)\//) || [];
+  const [, uuidMatch] = message.content.match(/https:\/\/ashes\.live\/decks\/share\/(.+?)\//) || [];
+  const [, idMatch] = message.content.match(/https:\/\/ashes\.live\/decks\/(.+?)\//) || [];
   const match = uuidMatch || idMatch;
   if (match) {
     fetchDeck(message, match, client);
