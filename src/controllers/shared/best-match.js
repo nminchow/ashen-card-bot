@@ -1,17 +1,14 @@
-module.exports = (text, client, filters = []) => {
-  const { data: { cardFuse } } = client;
-  const query = {
-    $and: [
-      ...filters,
-      {
-        $or: [
-          { name: text },
-          { title: text },
-        ],
-      },
-    ],
-  };
-  console.log(query);
-  console.log(cardFuse.search(query)[0]);
-  return cardFuse.search(query)[0];
+const card = require('../../views/card');
+const rule = require('../../views/rule');
+const searchFuse = require('./search-fuse');
+
+module.exports = (message, text, client, fullArt = false) => {
+  const result = searchFuse(text, client)[0];
+  if (!result) {
+    return message.channel.send('card not found');
+  }
+  if (result.item.type === 'rule') {
+    return message.channel.send({ embed: rule(result.item) });
+  }
+  return message.channel.send({ embed: card(result.item, client, fullArt) });
 };

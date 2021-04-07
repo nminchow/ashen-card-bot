@@ -1,8 +1,9 @@
 const rule = require('../../views/rule');
-const bestMatch = require('../shared/best-match');
+const searchFuse = require('../shared/search-fuse');
 
 module.exports = (message, text, client) => {
-  const result = bestMatch(text, client, [{ type: "'rule" }]);
+  // const result = bestMatch(text, client, [{ type: '^rule' }]);
+  const result = searchFuse(text, client).find(({ item: { type } }) => type === 'rule');
   if (!result) {
     return message.channel.send('rule not found');
   }
