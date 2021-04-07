@@ -21,5 +21,4 @@ const byId = async (message, id, client) => {
   return sendIfFound(message, { releases, ...deck }, client);
 };
 
-
 module.exports = byId;

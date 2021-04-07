@@ -1,4 +1,5 @@
 const got = require('got');
+const rawRules = require('../../docs/rules.json');
 
 const types = ['ceremonial', 'charm', 'divine', 'illusion', 'natural', 'sympathy', 'time'];
 
@@ -9,8 +10,15 @@ const referenceCards = types.map((dice) => ({
   name: `${dice} magic`,
 }));
 
+const rules = Object.entries(rawRules).map(([name, text]) => ({
+  name,
+  stub: name,
+  type: 'rule',
+  text,
+}));
+
 module.exports = async () => {
-  const cards = referenceCards;
+  const cards = [...referenceCards, ...rules];
   let url = 'https://api.ashes.live/v2/cards?limit=100';
   while (url) {
     // eslint-disable-next-line no-await-in-loop

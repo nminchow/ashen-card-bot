@@ -1,7 +1,7 @@
 const { Command } = require('discord.js-commando');
 const bestMatch = require('../../controllers/cards/best-match');
 
-module.exports = class CardCommand extends Command {
+module.exports = class ArtCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'art',

@@ -1,7 +1,7 @@
 const { Command } = require('discord.js-commando');
 const fetchDeck = require('../../controllers/decks/fetch');
 
-module.exports = class CardCommand extends Command {
+module.exports = class DeckCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'deck',

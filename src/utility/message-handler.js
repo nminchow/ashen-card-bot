@@ -20,8 +20,8 @@ module.exports = (message, client) => {
   }
 
   // gotchya here - 'share' is processed as a deck id if not checked for first
-  const [,uuidMatch] = message.content.match(/https:\/\/ashes\.live\/decks\/share\/(.+?)\//) || [];
-  const [,idMatch] = message.content.match(/https:\/\/ashes\.live\/decks\/(.+?)\//) || [];
+  const [, uuidMatch] = message.content.match(/https:\/\/ashes\.live\/decks\/share\/(.+?)\//) || [];
+  const [, idMatch] = message.content.match(/https:\/\/ashes\.live\/decks\/(.+?)\//) || [];
   const match = uuidMatch || idMatch;
   if (match) {
     fetchDeck(message, match, client);
