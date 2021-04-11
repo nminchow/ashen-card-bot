@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const parseText = require('../utility/parse-text');
 const colorForDice = require('../utility/color-for-dice');
+const emojiSubstitution = require('../controllers/cards/emoji-substitution');
 const { buildCardUrl, buildImgUrl, buildDiceUrl } = require('../utility/urls');
 
 module.exports = ({
@@ -18,6 +19,7 @@ module.exports = ({
   attack,
   recover,
   copies,
+  ...otherAttributes
 }, client, fullArt) => {
   const embed = new Discord.MessageEmbed();
   const dice = Array.isArray(diceData) ? diceData[0] : diceData;
@@ -28,6 +30,8 @@ module.exports = ({
     embed.setImage(stub);
     return embed;
   }
+
+  const { subbedText, emojiMapping } = emojiSubstitution({ text, ...otherAttributes });
 
   const url = buildCardUrl(stub);
   const imgUrl = buildImgUrl(stub);
@@ -48,7 +52,7 @@ module.exports = ({
   } else {
     const title = placement ? `${type} ⬦ ${placement}` : type;
     embed.setTitle(title);
-    embed.setDescription(parseText(text, client));
+    embed.setDescription(parseText(subbedText, client));
     embed.setThumbnail(imgUrl);
     Object.entries({
       battlefield, attack, life, spellboard, recover,
@@ -72,5 +76,5 @@ module.exports = ({
       embed.addField('Copies', copies);
     }
   }
-  return embed;
+  return { embed, emojiMapping };
 };

@@ -1,5 +1,5 @@
-const card = require('../../views/card');
 const searchFuse = require('../shared/search-fuse');
+const sendCard = require('./send-card');
 
 module.exports = (message, text, client, fullArt = false) => {
   // todo: switch to this once https://github.com/krisk/Fuse/issues/548 is addressed
@@ -8,5 +8,5 @@ module.exports = (message, text, client, fullArt = false) => {
   if (!result) {
     return message.channel.send('card not found');
   }
-  return message.channel.send({ embed: card(result.item, client, fullArt) });
+  return sendCard(message, result, client, fullArt);
 };
