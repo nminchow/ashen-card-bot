@@ -3,6 +3,7 @@ const path = require('path');
 const Fuse = require('fuse.js');
 const getCards = require('./setup/get-cards');
 const messageHandler = require('./utility/message-handler');
+const reactionHandler = require('./utility/reaction-handler');
 require('dotenv').config();
 
 const commandPrefix = '!!';
@@ -43,6 +44,8 @@ const setupClient = (cards) => {
     if (message.author.bot) return null;
     return messageHandler(message, client);
   });
+
+  client.on('messageReactionAdd', reactionHandler);
 
   client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
