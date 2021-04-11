@@ -20,6 +20,6 @@ module.exports = class ArtCommand extends Command {
   }
 
   run(message, { text }) {
-    return bestMatch(message, text, this.client, true);
+    return bestMatch(message, text, true);
   }
 };

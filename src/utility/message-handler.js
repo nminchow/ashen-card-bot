@@ -5,8 +5,8 @@ const fetchDeck = require('../controllers/decks/fetch');
 const removeDelineators = require('./remove-delineators');
 const cardList = require('../views/list');
 
-module.exports = (message, client) => {
-  const callMatch = (art) => (result) => bestMatch(message, result, client, art);
+module.exports = (message) => {
+  const callMatch = (art) => (result) => bestMatch(message, result, art);
 
   const matches = message.content.match(/\[.*?\]/gi) || [];
   const artMatches = message.content.match(/\{.*?\}/gi) || [];
@@ -18,7 +18,7 @@ module.exports = (message, client) => {
     hits.forEach(callMatch(false));
     artHits.forEach(callMatch(true));
   } else {
-    const coalesce = (hit) => (searchFuse(hit, client)[0] || {}).item || { miss: hit };
+    const coalesce = (hit) => (searchFuse(hit, message.client)[0] || {}).item || { miss: hit };
     const lookups = [...hits, ...artHits].map(coalesce);
     const allHits = lookups.filter(({ type }) => type);
     const misses = lookups.filter(({ type }) => !type);
@@ -34,6 +34,6 @@ module.exports = (message, client) => {
   const [, idMatch] = message.content.match(/https:\/\/ashes\.live\/decks\/(.+?)\//) || [];
   const match = uuidMatch || idMatch;
   if (match) {
-    fetchDeck(message, match, client);
+    fetchDeck(message, match);
   }
 };

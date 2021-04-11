@@ -42,7 +42,7 @@ const setupClient = (cards) => {
   client.on('message', (message) => {
     if (message.content.startsWith(commandPrefix)) return null;
     if (message.author.bot) return null;
-    return messageHandler(message, client);
+    return messageHandler(message);
   });
 
   client.on('messageReactionAdd', reactionHandler);

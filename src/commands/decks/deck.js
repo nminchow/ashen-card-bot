@@ -20,6 +20,6 @@ module.exports = class DeckCommand extends Command {
   }
 
   run(message, { uuid }) {
-    return fetchDeck(message, uuid, this.client);
+    return fetchDeck(message, uuid);
   }
 };

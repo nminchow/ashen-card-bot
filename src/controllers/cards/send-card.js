@@ -1,7 +1,7 @@
 const card = require('../../views/card');
 
-module.exports = (message, result, client, fullArt) => {
-  const { embed, emojiMapping } = card(result.item, client, fullArt);
+module.exports = (message, result, fullArt) => {
+  const { embed, emojiMapping } = card(result.item, message.client, fullArt);
   return new Promise((resolve, reject) => {
     const addEmoji = async (result) => {
       if (fullArt) {

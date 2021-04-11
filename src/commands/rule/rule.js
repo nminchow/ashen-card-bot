@@ -20,6 +20,6 @@ module.exports = class RuleCommand extends Command {
   }
 
   run(message, { text }) {
-    return bestMatch(message, text, this.client);
+    return bestMatch(message, text);
   }
 };

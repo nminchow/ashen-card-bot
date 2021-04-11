@@ -16,5 +16,5 @@ module.exports = async (messageReaction) => {
   const reactionOnCard = searchFuse(reactionOnStub, messageReaction.client)[0].item;
   const { emojiMapping } = emojiSubstitution(reactionOnCard);
   const { stub } = emojiMapping[name];
-  return sendCard(message, stub, messageReaction.client);
+  return sendCard(message, stub);
 };
