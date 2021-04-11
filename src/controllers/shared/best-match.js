@@ -1,4 +1,4 @@
-const card = require('../../views/card');
+const sendCard = require('../cards/send-card');
 const rule = require('../../views/rule');
 const searchFuse = require('./search-fuse');
 
@@ -10,5 +10,5 @@ module.exports = (message, text, client, fullArt = false) => {
   if (result.item.type === 'rule') {
     return message.channel.send({ embed: rule(result.item) });
   }
-  return message.channel.send({ embed: card(result.item, client, fullArt) });
+  return sendCard(message, result, client, fullArt);
 };

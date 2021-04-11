@@ -8,8 +8,8 @@ const cardList = require('../views/list');
 module.exports = (message, client) => {
   const callMatch = (art) => (result) => bestMatch(message, result, client, art);
 
-  const matches = message.content.match(/\[\[.*?\]\]/gi) || [];
-  const artMatches = message.content.match(/\{\{.*?\}\}/gi) || [];
+  const matches = message.content.match(/\[.*?\]/gi) || [];
+  const artMatches = message.content.match(/\{.*?\}/gi) || [];
 
   const hits = matches.map(removeDelineators);
   const artHits = artMatches.map(removeDelineators);
