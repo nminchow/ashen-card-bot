@@ -8,9 +8,7 @@ module.exports = (message, result, client, fullArt) => {
         resolve(result);
         return;
       }
-      await Promise.all(Object.entries(emojiMapping).map(([key]) => {
-        return result.react(key);
-      }));
+      await Promise.all(Object.entries(emojiMapping).map(([key]) => result.react(key)));
       resolve(result);
     };
 
