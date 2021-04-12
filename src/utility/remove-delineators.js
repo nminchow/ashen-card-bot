@@ -1,1 +1,1 @@
-module.exports = (text) => text.substring(1, text.length - 1);
+module.exports = (size = 1) => (text) => text.substring(size, text.length - size);

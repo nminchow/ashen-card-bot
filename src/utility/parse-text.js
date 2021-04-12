@@ -7,6 +7,6 @@ const regex = new RegExp(
 );
 
 module.exports = (cardText, { emojis }) => cardText.replace(regex, (match) => {
-  const key = removeDelineators(match);
+  const key = removeDelineators(2)(match);
   return emojis.resolve(emojiMapping[key]);
 });

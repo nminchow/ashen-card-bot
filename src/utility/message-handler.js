@@ -11,8 +11,8 @@ module.exports = (message) => {
   const matches = message.content.match(/\[.*?\]/gi) || [];
   const artMatches = message.content.match(/\{.*?\}/gi) || [];
 
-  const hits = matches.map(removeDelineators);
-  const artHits = artMatches.map(removeDelineators);
+  const hits = matches.map(removeDelineators());
+  const artHits = artMatches.map(removeDelineators());
 
   if (hits.length + artHits.length < 3) {
     hits.forEach(callMatch(false));
