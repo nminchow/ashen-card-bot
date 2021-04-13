@@ -4,7 +4,7 @@ const {
 } = require('lodash');
 const colorForDice = require('../utility/color-for-dice');
 const {
-  buildDiceUrl, buildImgUrl, buildDeckUrl, buildCardLink,
+  buildDiceUrl, buildImgUrl, buildDeckUrl, buildCardLink, buildDeckLink,
 } = require('../utility/urls');
 const emojiMapping = require('../utility/emoji-mapping');
 
@@ -65,7 +65,7 @@ module.exports = ({
   if (releases) {
     const releaseNames = releases.map(({ name, preconstructed_deck_id: id }) => {
       if (!id) return name;
-      return `[${name}](${buildDeckUrl(id)})`;
+      return buildDeckLink({ name, id });
     }).join(', ');
 
     embed.addField('Requires', releaseNames);

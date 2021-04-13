@@ -5,6 +5,7 @@ const firebaseAdmin = require('firebase-admin');
 const getCards = require('./setup/get-cards');
 const messageHandler = require('./utility/message-handler');
 const reactionHandler = require('./utility/reaction-handler');
+const generateReleases = require('./utility/generate-releases');
 require('dotenv').config();
 
 const commandPrefix = '!!';
@@ -19,6 +20,8 @@ const setupClient = (cards) => {
   firebaseAdmin.initializeApp();
   const db = firebaseAdmin.firestore();
 
+  const releases = generateReleases(cards);
+
   const cardFuse = new Fuse(cards, {
     keys: ['name', 'stub', 'type'],
     includeScore: true,
@@ -26,6 +29,7 @@ const setupClient = (cards) => {
 
   client.data = {
     cards,
+    releases,
     cardFuse,
     db,
   };

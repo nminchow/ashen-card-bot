@@ -8,10 +8,19 @@ module.exports = class DraftCommand extends Command {
       group: 'draft',
       memberName: 'draft',
       description: 'Start a draft.',
+      guildOnly: true,
+      args: [
+        {
+          key: 'name',
+          prompt: 'Draft Name',
+          type: 'string',
+          default: 'Ashes Draft',
+        },
+      ],
     });
   }
 
-  run(message) {
-    return create(message);
+  run(message, args) {
+    return create(message, args);
   }
 };
