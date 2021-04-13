@@ -9,5 +9,8 @@
     "no-shadow": [0],
     "no-console": [0],
     "camelcase": ["error", { "ignoreDestructuring": true}]
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020
   }
 }

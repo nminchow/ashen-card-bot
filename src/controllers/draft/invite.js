@@ -12,7 +12,7 @@ module.exports = (message, { draftId: id }) => {
   const createInvite = async () => {
     const ref = await db.collection('drafts').doc(id).get();
     if (!ref.exists) {
-      return message.channel.send('Draft not found! (You can start a new draft with `!!draft`)');
+      return message.channel.send('Draft not found. (You can start a new draft with `!!draft`)');
     }
     const doc = ref.data();
     const result = await sendEmbedAndIcons(invite(id, doc), message);

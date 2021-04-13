@@ -58,7 +58,8 @@ const setupClient = (cards) => {
     return messageHandler(message);
   });
 
-  client.on('messageReactionAdd', reactionHandler);
+  client.on('messageReactionAdd', reactionHandler());
+  client.on('messageReactionRemove', reactionHandler(true));
 
   client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
