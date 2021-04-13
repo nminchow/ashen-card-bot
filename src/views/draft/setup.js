@@ -13,14 +13,21 @@ module.exports = (id, { releases, name }) => {
     ['size', 'stub'], ['desc', 'asc'],
   );
 
-  const description = 'Your draft has been created! React with the following to exclude (or re-include) releases from the draft:'
+  const description = 'Your draft has been created! React with the following to exclude (or re-include) releases from the draft:';
 
   // TODO: It'd be nice to have deck links here, but we don't have the precon ids on the cards list
   const iconList = orderedReleases.map(({ icon, name }) => `${icon} **${name}**`).join('\n');
 
-  const completionInfo = 'Once ready, issue the ✅ reaction to lock the draft, shuffle, and deal each participant their first hand.';
+  const completionInfo = 'Once ready, issue the ✅ reaction to lock joining, shuffle, and deal each participant their first draft hand.';
 
-  embed.setDescription(`${description}\n\n${iconList}\n\n${completionInfo}`);
+  embed.addField(
+    'Inviting Players',
+    `Users can use the embed (below) to join the draft. If
+    you'd like to share the invite link elsewhere, issue \`!!invite ${id}\`.
+    (This bot must be able to see the channel you are sharing to.)`,
+  );
+
+  embed.setDescription([description, iconList, completionInfo].join('\n\n'));
   embed.setFooter(`Draft: ${id}`);
   embed.setTimestamp();
 
