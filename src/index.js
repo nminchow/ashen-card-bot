@@ -1,6 +1,7 @@
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
 const Fuse = require('fuse.js');
+const firebaseAdmin = require('firebase-admin');
 const getCards = require('./setup/get-cards');
 const messageHandler = require('./utility/message-handler');
 const reactionHandler = require('./utility/reaction-handler');
@@ -14,6 +15,10 @@ const client = new CommandoClient({
 });
 
 const setupClient = (cards) => {
+  // TODO: https://firebase.google.com/docs/firestore/quickstart#initialize
+  firebaseAdmin.initializeApp();
+  const db = firebaseAdmin.firestore();
+
   const cardFuse = new Fuse(cards, {
     keys: ['name', 'stub', 'type'],
     includeScore: true,
@@ -22,6 +27,7 @@ const setupClient = (cards) => {
   client.data = {
     cards,
     cardFuse,
+    db,
   };
 
   client.registry
@@ -34,6 +40,9 @@ const setupClient = (cards) => {
     ])
     .registerGroups([
       ['rules', 'rule commands'],
+    ])
+    .registerGroups([
+      ['draft', 'draft commands'],
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()
