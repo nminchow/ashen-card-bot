@@ -28,7 +28,7 @@ module.exports = (id, { releases, name }) => {
   );
 
   embed.setDescription([description, iconList, completionInfo].join('\n\n'));
-  embed.setFooter(`Draft: ${id}`);
+  embed.setFooter(`Draft:Setup:${id}`);
   embed.setTimestamp();
 
   return { embed, icons: [...icons.slice(0, orderedReleases.length), '✅'] };

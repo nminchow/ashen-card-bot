@@ -17,7 +17,7 @@ module.exports = (id, {
     ['size', 'stub'], ['desc', 'asc'],
   );
 
-  const endingText = open ? 'looking for players. React with ✅ below to join!' : 'started! If participating, you should have received your first hand.';
+  const endingText = open ? 'accepting players. React with ✅ below to join!' : 'started! If participating, you should have received your first hand.';
 
   const description = `${name} is currently ${endingText}`;
 
@@ -27,7 +27,7 @@ module.exports = (id, {
   embed.addField('Releases in use:', `**Master Set**, ${releaseNames}`);
 
   embed.setDescription(description);
-  embed.setFooter(`Draft: ${id}`);
+  embed.setFooter(`Draft:Join:${id}`);
   embed.setTimestamp();
 
   return { embed, icons: ['✅'] };

@@ -1,4 +1,4 @@
-const join = require('../../views/draft/join');
+const invite = require('../../views/draft/invite');
 
 module.exports = (message, { draftId: id }) => {
   const { client: { data: { db } } } = message;
@@ -15,7 +15,7 @@ module.exports = (message, { draftId: id }) => {
       return message.channel.send('Draft not found! (You can start a new draft with `!!draft`)');
     }
     const doc = ref.data();
-    const result = await sendEmbedAndIcons(join(id, doc), message);
+    const result = await sendEmbedAndIcons(invite(id, doc), message);
     return result;
   };
   return new Promise((resolve) => {

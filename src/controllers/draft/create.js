@@ -1,6 +1,6 @@
 const { keyBy, pick } = require('lodash');
 const setup = require('../../views/draft/setup');
-const join = require('../../views/draft/join');
+const invite = require('../../views/draft/invite');
 
 module.exports = (message, { name }) => {
   const { client: { data: { db, releases: rawReleases } }, author: rawAuthor } = message;
@@ -17,10 +17,12 @@ module.exports = (message, { name }) => {
   };
 
   const createDraft = async () => {
-    const doc = { author, name, releases, open: true };
+    const doc = {
+      author, name, releases, open: true,
+    };
     const { id } = await db.collection('drafts').add(doc);
     const result = await sendEmbedAndIcons(setup(id, doc), message);
-    await sendEmbedAndIcons(join(id, doc), message);
+    await sendEmbedAndIcons(invite(id, doc), message);
     return result;
   };
   return new Promise((resolve) => {
