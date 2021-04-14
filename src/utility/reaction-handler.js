@@ -8,7 +8,6 @@ module.exports = (remove = false) => async (messageReaction, user) => {
   if (messageReaction.partial) {
     try {
       await messageReaction.fetch();
-      await messageReaction.users.fetch();
     } catch (error) {
       console.error('Something went wrong when fetching partial: ', error);
       // Return as `reaction.message.author` may be undefined/null
@@ -18,7 +17,14 @@ module.exports = (remove = false) => async (messageReaction, user) => {
   const { count, emoji: { name }, message } = messageReaction;
   if (message.author.id !== process.env.owner) return null;
   const alsoHasOwn = await messageReaction.users.resolve(process.env.owner);
-  if (!alsoHasOwn) return null;
+  if (!alsoHasOwn) {
+    // for some reason, subsequent calls on a formal partial do not yield a
+    // populated user list. At this point, lets refetch to be safe
+    await messageReaction.users.fetch();
+    const secondAttempt = await messageReaction.users.resolve(process.env.owner);
+    console.log('making second attempt');
+    if (!secondAttempt) return null;
+  }
 
   if (message.embeds[0]?.footer.text.split(':')[0] === 'Draft') {
     return draftHandler(messageReaction, user, remove);
