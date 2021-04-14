@@ -16,7 +16,7 @@ module.exports = (id, { releases, name }) => {
   const description = 'Your draft has been created! React with the following to exclude (or re-include) releases from the draft:';
 
   // TODO: It'd be nice to have deck links here, but we don't have the precon ids on the cards list
-  const iconList = orderedReleases.map(({ icon, name }) => `${icon} **${name}**`).join('\n');
+  const iconList = orderedReleases.map(({ icon, name, enabled }) => `${icon} ${enabled ? `**${name}**` : `~~${name}~~`}`).join('\n');
 
   const completionInfo = 'Once ready, issue the ✅ reaction to lock joining, shuffle, and deal each participant their first draft hand.';
 

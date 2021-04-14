@@ -4,7 +4,6 @@ const searchFuse = require('../controllers/shared/search-fuse');
 const draftHandler = require('../controllers/draft/reaction-handler');
 
 module.exports = (remove = false) => async (messageReaction, user) => {
-  // see if bot has sent reaction and reaction count is exactly 2
   if (messageReaction.me) return null;
   const { count, emoji: { name }, message } = messageReaction;
   if (message.author.id !== process.env.owner) return null;
