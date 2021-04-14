@@ -21,6 +21,22 @@ const setupClient = (cards) => {
   firebaseAdmin.initializeApp();
   const db = firebaseAdmin.firestore();
 
+  const snapshotListeners = [];
+  const setupListeners = () => {
+    // TODO: only query for past 31 days
+    const query = db.collection('drafts').where('open', '==', true);
+    query.get().then((querySnapshot) => {
+      // TODO: iterate snapshotListeners and unhook them
+      // TODO: start a watcher for all returned documents and add it to our list
+      console.log(`Received query snapshot of size ${querySnapshot.size}`);
+    }, (err) => {
+      console.log(`Encountered error: ${err}`);
+    });
+  };
+
+  setupListeners();
+  setInterval(setupListeners, 24 * 60 * 60 * 1000);
+
   const releases = generateReleases(cards);
 
   const cardFuse = new Fuse(cards, {

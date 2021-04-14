@@ -1,4 +1,5 @@
 const { keyBy, pick } = require('lodash');
+const firebaseAdmin = require('firebase-admin');
 const setup = require('../../views/draft/setup');
 const invite = require('../../views/draft/invite');
 
@@ -17,8 +18,10 @@ module.exports = (message, { name }) => {
   };
 
   const createDraft = async () => {
+    const createdAt = firebaseAdmin.firestore.FieldValue.serverTimestamp();
+
     const doc = {
-      author, name, releases, open: true,
+      author, name, releases, open: true, createdAt,
     };
     const draftRef = await db.collection('drafts').add(doc);
     const { id } = draftRef;
