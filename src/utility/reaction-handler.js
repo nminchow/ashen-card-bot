@@ -6,7 +6,6 @@ const draftHandler = require('../controllers/draft/reaction-handler');
 module.exports = (remove = false) => async (messageReaction, user) => {
   if (!messageReaction.partial && messageReaction.me) return null;
   if (messageReaction.partial) {
-    console.log('attempting partial');
     try {
       await messageReaction.fetch();
       await messageReaction.users.fetch();
@@ -17,10 +16,8 @@ module.exports = (remove = false) => async (messageReaction, user) => {
     }
   }
   const { count, emoji: { name }, message } = messageReaction;
-  console.log(message.author.id);
   if (message.author.id !== process.env.owner) return null;
   const alsoHasOwn = await messageReaction.users.resolve(process.env.owner);
-  console.log(alsoHasOwn);
   if (!alsoHasOwn) return null;
 
   if (message.embeds[0]?.footer.text.split(':')[0] === 'Draft') {
