@@ -4,10 +4,23 @@ const searchFuse = require('../controllers/shared/search-fuse');
 const draftHandler = require('../controllers/draft/reaction-handler');
 
 module.exports = (remove = false) => async (messageReaction, user) => {
-  if (messageReaction.me) return null;
+  if (!messageReaction.partial && messageReaction.me) return null;
+  if (messageReaction.partial) {
+    console.log('attempting partial');
+    try {
+      await messageReaction.fetch();
+      await messageReaction.users.fetch();
+    } catch (error) {
+      console.error('Something went wrong when fetching partial: ', error);
+      // Return as `reaction.message.author` may be undefined/null
+      return null;
+    }
+  }
   const { count, emoji: { name }, message } = messageReaction;
+  console.log(message.author.id);
   if (message.author.id !== process.env.owner) return null;
   const alsoHasOwn = await messageReaction.users.resolve(process.env.owner);
+  console.log(alsoHasOwn);
   if (!alsoHasOwn) return null;
 
   if (message.embeds[0]?.footer.text.split(':')[0] === 'Draft') {
@@ -15,6 +28,8 @@ module.exports = (remove = false) => async (messageReaction, user) => {
   }
 
   // card reaction
+
+  // this check isn't technically necessary as alsoHasOwn should be null, but just in case:
   if (remove) return null;
   if (count !== 2) return null;
   // remove own reaction

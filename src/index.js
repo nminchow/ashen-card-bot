@@ -13,6 +13,7 @@ const commandPrefix = '!!';
 const client = new CommandoClient({
   commandPrefix: '!!',
   owner: process.env.owner,
+  partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'USER'],
 });
 
 const setupClient = (cards) => {
