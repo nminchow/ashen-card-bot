@@ -4,7 +4,7 @@ const searchFuse = require('../controllers/shared/search-fuse');
 const draftHandler = require('../controllers/draft/reaction-handler');
 
 module.exports = (remove = false) => async (messageReaction, user) => {
-  if (!messageReaction.partial && messageReaction.me) return null;
+  if (user.id === process.env.owner) return null;
   if (messageReaction.partial) {
     try {
       await messageReaction.fetch();

@@ -31,7 +31,7 @@ module.exports = ({
     return embed;
   }
 
-  const { subbedText, emojiMapping } = emojiSubstitution({ text, ...otherAttributes });
+  const { subbedText = '', emojiMapping } = emojiSubstitution({ text, ...otherAttributes });
 
   const url = buildCardUrl(stub);
   const imgUrl = buildImgUrl(stub);
