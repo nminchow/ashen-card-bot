@@ -10,12 +10,15 @@ module.exports = (message, { draftId: id }) => {
   };
 
   const createInvite = async () => {
-    const ref = await db.collection('drafts').doc(id).get();
-    if (!ref.exists) {
+    const snapshot = await db.collection('drafts').doc(id).get();
+    if (!snapshot.exists) {
       return message.channel.send('Draft not found. (You can start a new draft with `!!draft`)');
     }
-    const doc = ref.data();
+    const doc = snapshot.data();
     const result = await sendEmbedAndIcons(invite(id, doc), message);
+    const invites = [...doc.invites, `${message.channel.id}:${result.id}`];
+    doc.invites = invites;
+    snapshot.ref.set(doc);
     return result;
   };
   return new Promise((resolve) => {

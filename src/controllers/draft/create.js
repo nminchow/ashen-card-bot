@@ -21,13 +21,16 @@ module.exports = (message, { name }) => {
     const createdAt = firebaseAdmin.firestore.FieldValue.serverTimestamp();
 
     const doc = {
-      author, name, releases, open: true, createdAt,
+      author, name, releases, open: true, createdAt, users: [rawAuthor.id],
     };
     const draftRef = await db.collection('drafts').add(doc);
     const { id } = draftRef;
     const result = await sendEmbedAndIcons(setup(id, doc), message);
-    await sendEmbedAndIcons(invite(id, doc), message);
-    await draftRef.set({ setupId: result.id }, { merge: true });
+    const { id: inviteId } = await sendEmbedAndIcons(invite(id, doc), message);
+    await draftRef.set({
+      setupId: `${message.channel.id}:${result.id}`,
+      invites: [`${message.channel.id}:${inviteId}`],
+    }, { merge: true });
     return result;
   };
   return new Promise((resolve) => {

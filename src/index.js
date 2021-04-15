@@ -6,6 +6,7 @@ const getCards = require('./setup/get-cards');
 const messageHandler = require('./utility/message-handler');
 const reactionHandler = require('./utility/reaction-handler');
 const generateReleases = require('./utility/generate-releases');
+const update = require('./controllers/draft/update');
 require('dotenv').config();
 
 const commandPrefix = '!!';
@@ -21,16 +22,17 @@ const setupClient = (cards) => {
   firebaseAdmin.initializeApp();
   const db = firebaseAdmin.firestore();
 
-  const snapshotListeners = [];
+  let snapshotListener = () => {};
   const setupListeners = () => {
-    // TODO: only query for past 31 days
-    const query = db.collection('drafts').where('open', '==', true);
-    query.get().then((querySnapshot) => {
-      // TODO: iterate snapshotListeners and unhook them
-      // TODO: start a watcher for all returned documents and add it to our list
-      console.log(`Received query snapshot of size ${querySnapshot.size}`);
-    }, (err) => {
-      console.log(`Encountered error: ${err}`);
+    const date = new Date();
+    date.setDate(date.getDate() - 31);
+
+    snapshotListener();
+    const query = db.collection('drafts').where('open', '==', true).where('createdAt', '>', date);
+    snapshotListener = query.onSnapshot((querySnapshot) => {
+      querySnapshot.docChanges().forEach((change) => {
+        update(change.doc, client);
+      });
     });
   };
 

@@ -1,13 +1,12 @@
-const setup = require('../../views/draft/setup');
-
 const handleJoin = async ({ emoji: { name } }, user, draftSnapshot, remove) => {
-  // we'll need to store the channel and message id to lookup like this:
-  // msg.channel.messages.fetch("701574160211771462")
-  // .then(message => console.log(message.content))
-  // .catch(console.error);
+  const draft = draftSnapshot.data();
+  const { id } = user;
+  const users = [...draft.users, id];
+  draft.users = users;
+  return draftSnapshot.ref.set(draft);
 };
 
-const handleSetup = async ({ emoji: { name }, message }, user, draftSnapshot, enabled) => {
+const handleSetup = async ({ emoji: { name } }, user, draftSnapshot, enabled) => {
   const draft = draftSnapshot.data();
   if (user.id !== draft.author.id) {
     const dm = await user.createDM(true);
@@ -15,10 +14,7 @@ const handleSetup = async ({ emoji: { name }, message }, user, draftSnapshot, en
   }
   draft.releases[name].enabled = enabled;
   // ref should be enabled when a reaction is removed and disabled when added
-  await draftSnapshot.ref.set(draft);
-
-  const { embed } = setup(draftSnapshot.ref.id, draft);
-  return message.edit(embed);
+  return draftSnapshot.ref.set(draft);
 };
 
 module.exports = async (messageReaction, user, remove) => {
