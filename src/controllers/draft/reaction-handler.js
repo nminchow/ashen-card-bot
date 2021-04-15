@@ -1,8 +1,10 @@
-const handleJoin = async ({ emoji: { name } }, user, draftSnapshot, remove) => {
+const handleJoin = async (_, user, draftSnapshot, remove) => {
   const draft = draftSnapshot.data();
   const { id } = user;
-  const users = [...draft.users, id];
-  draft.users = users;
+  // in case the user reacts to multiple joins, always filter them out
+  const filtered = draft.users.filter((candidate) => id !== candidate);
+  // re-add if this wasn't a removal
+  draft.users = remove ? filtered : [...filtered, id];
   return draftSnapshot.ref.set(draft);
 };
 

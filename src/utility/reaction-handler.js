@@ -20,9 +20,9 @@ module.exports = (remove = false) => async (messageReaction, user) => {
   if (!alsoHasOwn) {
     // for some reason, subsequent calls on a formal partial do not yield a
     // populated user list. At this point, lets refetch to be safe
+    console.log('making second attempt');
     await messageReaction.users.fetch();
     const secondAttempt = await messageReaction.users.resolve(process.env.owner);
-    console.log('making second attempt');
     if (!secondAttempt) return null;
   }
 

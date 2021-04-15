@@ -27,7 +27,7 @@ module.exports = (id, {
 
   embed.addField('Releases in use:', `**Master Set**, ${releaseNames}`);
 
-  embed.addField('Participants', users);
+  embed.addField('Participants:', users.map((user) => `<@${user}>`).join('\n') || 'No current participants');
 
   embed.setDescription(description);
   embed.setFooter(`Draft:Join:${id}`);
