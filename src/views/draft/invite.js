@@ -6,7 +6,7 @@ module.exports = (id, {
   releases,
   name,
   open,
-  users,
+  players,
 }) => {
   const embed = new Discord.MessageEmbed();
 
@@ -27,7 +27,7 @@ module.exports = (id, {
 
   embed.addField('Releases in use:', `**Master Set**, ${releaseNames}`);
 
-  embed.addField('Participants:', users.map((user) => `<@${user}>`).join('\n') || 'No current participants');
+  embed.addField('Participants:', players.map((user) => `<@${user}>`).join('\n') || 'No current participants');
 
   embed.setDescription(description);
   embed.setFooter(`Draft:Join:${id}`);

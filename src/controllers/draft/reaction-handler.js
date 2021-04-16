@@ -1,3 +1,5 @@
+const start = require('./start');
+
 const handleOpen = async ({ open }, user) => {
   if (!open) {
     const dm = await user.createDM(true);
@@ -12,9 +14,9 @@ const handleJoin = async (_, user, draftSnapshot, remove) => {
   if (!handleOpen(draft, user)) return null;
   const { id } = user;
   // in case the user reacts to multiple joins, always filter them out
-  const filtered = draft.users.filter((candidate) => id !== candidate);
+  const filtered = draft.players.filter((candidate) => id !== candidate);
   // re-add if this wasn't a removal
-  draft.users = remove ? filtered : [...filtered, id];
+  draft.players = remove ? filtered : [...filtered, id];
   return draftSnapshot.ref.set(draft);
 };
 
@@ -24,6 +26,9 @@ const handleSetup = async ({ emoji: { name } }, user, draftSnapshot, enabled) =>
   if (user.id !== draft.author.id) {
     const dm = await user.createDM(true);
     return dm.send("Only the draft's creator can modify it's setup.");
+  }
+  if (name === '✅') {
+    return start(draftSnapshot, user);
   }
   draft.releases[name].enabled = enabled;
   // ref should be enabled when a reaction is removed and disabled when added

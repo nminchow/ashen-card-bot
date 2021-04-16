@@ -21,7 +21,7 @@ module.exports = (message, { name }) => {
     const createdAt = firebaseAdmin.firestore.FieldValue.serverTimestamp();
 
     const doc = {
-      author, name, releases, open: true, createdAt, users: [rawAuthor.id],
+      author, name, releases, open: true, createdAt, players: [rawAuthor.id],
     };
     const draftRef = await db.collection('drafts').add(doc);
     const { id } = draftRef;
