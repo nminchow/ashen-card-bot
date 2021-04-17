@@ -1,3 +1,4 @@
+const { DMChannel } = require('discord.js');
 const bestMatch = require('../controllers/shared/best-match');
 const rule = require('../views/rule');
 const searchFuse = require('../controllers/shared/search-fuse');
@@ -6,6 +7,7 @@ const removeDelineators = require('./remove-delineators');
 const cardList = require('../views/list');
 
 module.exports = (message) => {
+  if (message.channel instanceof DMChannel) return;
   const callMatch = (art) => (result) => bestMatch(message, result, art);
 
   const matches = message.content.match(/\[.*?\]/gi) || [];

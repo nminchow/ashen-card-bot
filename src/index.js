@@ -62,6 +62,9 @@ const setupClient = (cards) => {
       ['decks', 'deck commands'],
     ])
     .registerGroups([
+      ['dice', 'dice commands'],
+    ])
+    .registerGroups([
       ['rules', 'rule commands'],
     ])
     .registerGroups([
