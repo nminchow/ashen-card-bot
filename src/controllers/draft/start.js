@@ -1,6 +1,9 @@
+const { TextChannel, MessageEmbed } = require('discord.js');
 const {
   shuffle, fromPairs, groupBy, mapValues, chunk,
 } = require('lodash');
+const createMessageLink = require('../../utility/create-message-link');
+const getMessageByString = require('../../utility/get-message-by-string');
 
 module.exports = async (draftSnapshot, user) => {
   const draft = draftSnapshot.data();
@@ -50,5 +53,20 @@ module.exports = async (draftSnapshot, user) => {
     phoenixborn,
     dice: [], // TODO
   };
-  return draftSnapshot.ref.set(draft);
+  await draftSnapshot.ref.set(draft);
+
+  const { setupId, invites } = draft;
+  return Promise.all([setupId, ...invites].map(async (id, index) => {
+    const message = await getMessageByString(id, user.client);
+    if (message.channel instanceof TextChannel && index) {
+      const embed = new MessageEmbed();
+      embed.setDescription(
+        `${draft.name} has begun! All participants have been DMed a message they will use to make card and dice selections.\n\n`
+        + `[The embed above](${createMessageLink(message)}) will also show the status of the draft.`,
+      );
+
+      await message.channel.send({ embed });
+    }
+    return Promise.all(message.reactions.cache.map((r) => r.users.remove(process.env.owner)));
+  }));
 };
