@@ -2,7 +2,8 @@ const setup = require('../../views/draft/setup');
 const invite = require('../../views/draft/invite');
 
 // called when a draft document has been updated
-// Note: docChanges still fires once when draft is transitioned from open to close and has the _old_ version of the data still.
+// Note: docChanges still fires once when draft is transitioned from open to
+// close and has the _old_ version of the data still.
 module.exports = (draftSnapshot, client) => {
   const getChannelByString = async (id) => {
     const [channelId, messageId] = id.split(':');

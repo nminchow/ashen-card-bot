@@ -1,4 +1,6 @@
-const { shuffle, fromPairs, groupBy, mapValues, chunk, keyBy } = require('lodash');
+const {
+  shuffle, fromPairs, groupBy, mapValues, chunk,
+} = require('lodash');
 
 module.exports = async (draftSnapshot, user) => {
   const draft = draftSnapshot.data();
