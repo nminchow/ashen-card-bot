@@ -11,7 +11,7 @@ const handleOpen = async ({ open }, user) => {
 
 const handleJoin = async (_, user, draftSnapshot, remove) => {
   const draft = draftSnapshot.data();
-  if (!handleOpen(draft, user)) return null;
+  if (!await handleOpen(draft, user)) return null;
   const { id } = user;
   // in case the user reacts to multiple joins, always filter them out
   const filtered = draft.players.filter((candidate) => id !== candidate);
@@ -22,7 +22,7 @@ const handleJoin = async (_, user, draftSnapshot, remove) => {
 
 const handleSetup = async ({ emoji: { name } }, user, draftSnapshot, enabled) => {
   const draft = draftSnapshot.data();
-  if (!handleOpen(draft, user)) return null;
+  if (!await handleOpen(draft, user)) return null;
   if (user.id !== draft.author.id) {
     const dm = await user.createDM(true);
     return dm.send("Only the draft's creator can modify it's setup.");

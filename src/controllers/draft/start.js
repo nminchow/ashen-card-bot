@@ -1,4 +1,4 @@
-const { shuffle, fromPairs, groupBy, mapValues } = require('lodash');
+const { shuffle, fromPairs, groupBy, mapValues, chunk, keyBy } = require('lodash');
 
 module.exports = async (draftSnapshot, user) => {
   const draft = draftSnapshot.data();
@@ -35,14 +35,18 @@ module.exports = async (draftSnapshot, user) => {
     (cards) => cards.map(stubFromCard),
   );
 
-  // TODO: dice
+  // cannot store array of arrays directly, so key by index
+  const hands = chunk(shuffle(cards), 9).splice(0, draft.players.length).reduce(
+    (acc, hand, i) => ({ ...acc, [i]: hand }), {},
+  );
 
   draft.pools = {
-    stage: 'phoenixborn',
+    stage: 'phoenixborn', // transitions to 'cards', then 'dice'
+    round: 0, // used for card and dice index
     current: draft.players[0],
-    cards,
+    hands,
     phoenixborn,
-    dice: [],
+    dice: [], // TODO
   };
   return draftSnapshot.ref.set(draft);
 };
