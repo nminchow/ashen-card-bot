@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { orderBy } = require('lodash');
 
 module.exports = (id, {
@@ -7,8 +7,9 @@ module.exports = (id, {
   name,
   open,
   players,
+  pools: { stage, round, current } = {},
 }) => {
-  const embed = new Discord.MessageEmbed();
+  const embed = new MessageEmbed();
 
   embed.setAuthor(username, avatar);
   embed.setTitle(name);
@@ -18,16 +19,28 @@ module.exports = (id, {
     ['size', 'stub'], ['desc', 'asc'],
   );
 
-  const endingText = open ? 'accepting players. React with ✅ below to join!' : 'started! If participating, you should have received your first hand.';
+  const endingText = open ? 'is currently accepting players. React with ✅ below to join!' : 'is currently in progress!\n\n';
 
-  const description = `${name} is currently ${endingText}`;
+  const description = `${name} ${endingText}`;
 
   // TODO: It'd be nice to have deck links here, but we don't have the precon ids on the cards list
-  const releaseNames = orderedReleases.map(({ name }) => `**${name}**`).join(', ');
+  const releaseNames = orderedReleases.map(({ name }) => name).join(', ');
 
-  embed.addField('Releases in use:', `**Master Set**, ${releaseNames}`);
+  embed.addField('Releases in use:', `Master Set, ${releaseNames}\n\n`);
 
-  embed.addField('Participants:', players.map((user) => `<@${user}>`).join('\n') || 'No current participants');
+  if (stage) {
+    const roundText = ['card', 'dice'].includes(stage) ? ` round ${round + 1}` : '';
+    const helpText = stage !== 'card' ? ' (current player indicated by 🔸)' : '';
+    embed.addField('Draft Step:', `**${stage}** selection${roundText}${helpText}`);
+  }
+
+  const userText = (user) => {
+    const defaultText = `<@${user}>`;
+    if (!stage || stage === 'card' || user !== current) return defaultText;
+    return `${defaultText} 🔸`;
+  };
+
+  embed.addField('Participants:', players.map(userText).join('\n') || 'No current participants');
 
   embed.setDescription(description);
   embed.setFooter(`Draft:Join:${id}`);

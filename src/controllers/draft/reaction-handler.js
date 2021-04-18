@@ -1,4 +1,5 @@
 const start = require('./start');
+const handleChoice = require('./choice');
 
 const handleOpen = async ({ open }, user) => {
   if (!open) {
@@ -48,13 +49,23 @@ module.exports = async (messageReaction, user, remove) => {
     return message.channel.send('Draft not found! It has likely expired or was removed.');
   }
 
-  if (type === 'Join') {
-    return handleJoin(messageReaction, user, draftSnapshot, remove);
-  }
+  const functionLookup = () => {
+    if (type === 'Join') {
+      return handleJoin;
+    }
 
-  if (type === 'Setup') {
-    return handleSetup(messageReaction, user, draftSnapshot, remove);
-  }
+    if (type === 'Setup') {
+      return handleSetup;
+    }
 
-  return message.channel.send('Unknown Embed Type');
+    if (type === 'User') {
+      return handleChoice;
+    }
+  };
+
+  const handler = functionLookup();
+
+  if (!handler) return message.channel.send('Unknown Embed Type');
+
+  return handler(messageReaction, user, draftSnapshot, remove);
 };

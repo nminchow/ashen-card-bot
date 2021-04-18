@@ -4,6 +4,7 @@ const {
 } = require('lodash');
 const createMessageLink = require('../../utility/create-message-link');
 const getMessageByString = require('../../utility/get-message-by-string');
+const choice = require('../../views/draft/choice');
 
 module.exports = async (draftSnapshot, user) => {
   const draft = draftSnapshot.data();
@@ -24,6 +25,14 @@ module.exports = async (draftSnapshot, user) => {
       deck: [],
     },
   ])));
+
+  await Promise.all(draft.players.map(async (player) => {
+    const dm = await user.createDM(true);
+    const embed = choice(draftSnapshot.ref.id, draft);
+    const result = await dm.send({ embed });
+
+    draft.playerData[player].messageId = `${dm}:${result}`;
+  }));
 
   const stubFromCard = ({ stub }) => stub;
 
@@ -46,7 +55,7 @@ module.exports = async (draftSnapshot, user) => {
   );
 
   draft.pools = {
-    stage: 'phoenixborn', // transitions to 'cards', then 'dice'
+    stage: 'phoenixborn', // transitions to 'card', then 'dice'
     round: 0, // used for card and dice index
     current: draft.players[0],
     hands,
@@ -61,7 +70,8 @@ module.exports = async (draftSnapshot, user) => {
     if (message.channel instanceof TextChannel && index) {
       const embed = new MessageEmbed();
       embed.setDescription(
-        `${draft.name} has begun! All participants have been DMed a message they will use to make card and dice selections.\n\n`
+        `${draft.name} has begun! Player order has been randomized and cards have been shuffled. '
+        + 'All participants have been DMed a message they will use to make card and dice selections.\n\n`
         + `[The embed above](${createMessageLink(message)}) will also show the status of the draft.`,
       );
 

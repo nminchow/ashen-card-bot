@@ -28,16 +28,13 @@ const setupClient = (cards) => {
     date.setDate(date.getDate() - 31);
 
     snapshotListener();
-    const query = db.collection('drafts').where('open', '==', true).where('createdAt', '>', date);
+    const query = db.collection('drafts').where('createdAt', '>', date);
     snapshotListener = query.onSnapshot((querySnapshot) => {
       querySnapshot.docChanges().forEach((change) => {
         update(change.doc, client);
       });
     });
   };
-
-  setupListeners();
-  setInterval(setupListeners, 24 * 60 * 60 * 1000);
 
   const releases = generateReleases(cards);
 
@@ -85,6 +82,8 @@ const setupClient = (cards) => {
 
   client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
+    setupListeners();
+    setInterval(setupListeners, 24 * 60 * 60 * 1000);
     client.user.setActivity('for help: !!help');
   });
 
