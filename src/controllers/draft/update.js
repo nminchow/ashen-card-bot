@@ -1,5 +1,6 @@
 const setup = require('../../views/draft/setup');
 const invite = require('../../views/draft/invite');
+const choice = require('../../views/draft/choice');
 const getMessageByString = require('../../utility/get-message-by-string');
 
 // called when a draft document has been updated
@@ -19,11 +20,20 @@ module.exports = (draftSnapshot, client) => {
     return setupMessage.edit(setupEmbed);
   };
 
-  const inviteUpdates = invites.map((inviteId) => async () => {
+  const inviteUpdates = invites.map(async (inviteId) => {
     const message = await getMessageByString(inviteId, client);
     if (!message) return null;
     console.log('updating invite');
     return message.edit(embed);
   });
-  return Promise.all([updateEdit(), ...inviteUpdates.map((call) => call())]);
+
+  const editUpdates = Object.entries(draft.playerData || []).map(async ([id, { messageId }]) => {
+    const message = await getMessageByString(messageId, client);
+    if (!message) return null;
+    console.log('updating edit');
+    const embed = choice(draftSnapshot.ref.id, id, draft);
+    return message.edit(embed);
+  });
+
+  return Promise.all([updateEdit(), ...inviteUpdates, ...editUpdates]);
 };

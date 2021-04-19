@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
-const { warning } = require('../../constants/colors');
+const { warning, ready } = require('../../constants/colors');
 
-module.exports = (id, { name, pools: { stage } = {} }) => {
+module.exports = (id, playerId, { name, pools: { stage } = {} }) => {
   const embed = new MessageEmbed();
   embed.setTitle(name);
   embed.setFooter(`Draft:User:${id}`);
@@ -10,4 +10,8 @@ module.exports = (id, { name, pools: { stage } = {} }) => {
     embed.setDescription('Initializing...');
     return embed;
   }
+
+  embed.setAuthor(`${stage} selection`);
+  embed.setColor(ready);
+  return embed;
 };

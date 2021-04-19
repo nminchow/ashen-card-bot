@@ -28,10 +28,10 @@ module.exports = async (draftSnapshot, user) => {
 
   await Promise.all(draft.players.map(async (player) => {
     const dm = await user.createDM(true);
-    const embed = choice(draftSnapshot.ref.id, draft);
+    const embed = choice(draftSnapshot.ref.id, player, draft);
     const result = await dm.send({ embed });
 
-    draft.playerData[player].messageId = `${dm}:${result}`;
+    draft.playerData[player].messageId = `${dm.id}:${result.id}`;
   }));
 
   const stubFromCard = ({ stub }) => stub;
