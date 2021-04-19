@@ -61,6 +61,8 @@ module.exports = async (messageReaction, user, remove) => {
     if (type === 'User') {
       return handleChoice;
     }
+
+    return null;
   };
 
   const handler = functionLookup();
