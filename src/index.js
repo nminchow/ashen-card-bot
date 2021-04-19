@@ -7,6 +7,7 @@ const messageHandler = require('./utility/message-handler');
 const reactionHandler = require('./utility/reaction-handler');
 const generateReleases = require('./utility/generate-releases');
 const update = require('./controllers/draft/update');
+const { keyBy } = require('lodash');
 require('dotenv').config();
 
 const commandPrefix = '!!';
@@ -37,6 +38,7 @@ const setupClient = (cards) => {
   };
 
   const releases = generateReleases(cards);
+  const cardsByStub = keyBy(cards, 'stub');
 
   const cardFuse = new Fuse(cards, {
     keys: ['name', 'stub', 'type'],
@@ -47,6 +49,7 @@ const setupClient = (cards) => {
     cards,
     releases,
     cardFuse,
+    cardsByStub,
     db,
   };
 

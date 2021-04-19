@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const { orderBy } = require('lodash');
-const icons = require('../../utility/universal-emoji-list');
+const icons = require('../../constants/universal-emoji-list');
 
 module.exports = (id, { releases, name, open }) => {
   const embed = new Discord.MessageEmbed();

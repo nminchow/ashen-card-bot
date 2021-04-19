@@ -1,5 +1,5 @@
 const { groupBy, orderBy } = require('lodash');
-const icons = require('./universal-emoji-list');
+const icons = require('../constants/universal-emoji-list');
 
 module.exports = (cards) => {
   const cardsBySet = groupBy(

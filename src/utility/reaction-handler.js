@@ -16,13 +16,14 @@ module.exports = (remove = false) => async (messageReaction, user) => {
   }
   const { count, emoji: { name }, message } = messageReaction;
   if (message.author.id !== process.env.owner) return null;
-  const alsoHasOwn = await messageReaction.users.resolve(process.env.owner);
+  const alsoHasOwn = messageReaction.users.resolve(process.env.owner);
   if (!alsoHasOwn) {
     // for some reason, subsequent calls on a formal partial do not yield a
     // populated user list. At this point, lets refetch to be safe
     console.log('making second attempt');
     await messageReaction.users.fetch();
-    const secondAttempt = await messageReaction.users.resolve(process.env.owner);
+    const secondAttempt = messageReaction.users.resolve(process.env.owner);
+    console.log(secondAttempt);
     if (!secondAttempt) return null;
   }
 
