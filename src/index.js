@@ -2,12 +2,12 @@ const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
 const Fuse = require('fuse.js');
 const firebaseAdmin = require('firebase-admin');
+const { keyBy } = require('lodash');
 const getCards = require('./setup/get-cards');
 const messageHandler = require('./utility/message-handler');
 const reactionHandler = require('./utility/reaction-handler');
 const generateReleases = require('./utility/generate-releases');
 const update = require('./controllers/draft/update');
-const { keyBy } = require('lodash');
 require('dotenv').config();
 
 const commandPrefix = '!!';
