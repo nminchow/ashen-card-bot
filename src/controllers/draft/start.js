@@ -36,12 +36,16 @@ module.exports = async (draftSnapshot, user) => {
 
   const stubFromCard = ({ stub }) => stub;
 
-  const releases = Object.values(draft.releases).map(stubFromCard);
+  const releases = [
+    'master-set',
+    ...Object.values(draft.releases).filter(
+      ({ enabled }) => enabled,
+    ).map(stubFromCard),
+  ];
 
   // filter out signature cards, unused releases, rules, and references
-  // TODO: verify we are filtering out phoenixborn, cards, and conjurations correctly
   const eligibleCards = user.client.data.cards.filter(
-    ({ release: { stub } = {}, phoenixborn }) => !phoenixborn
+    ({ release: { stub } = {}, phoenixborn }) => !phoenixborn // checks for signature cards
       && releases.includes(stub),
   );
 
