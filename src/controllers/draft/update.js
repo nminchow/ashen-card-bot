@@ -13,17 +13,28 @@ module.exports = (draftSnapshot, client) => {
   const { embed: setupEmbed } = setup(draftSnapshot.ref.id, draft);
   const { embed } = invite(draftSnapshot.ref.id, draft);
 
+  const stringifyEmbed = ({ description, fields }) => {
+    const stringifiedFields = fields.map(({ name, value }) => `${name}:${value}`);
+    return `${description}:${stringifiedFields}`.replace(/\s+/g, '');
+  };
+
   const updateEdit = async () => {
     console.log('updating');
     const setupMessage = await getMessageByString(setupId, client);
     if (!setupMessage) return null;
+    if (stringifyEmbed(setupMessage.embeds[0]) === stringifyEmbed(setupEmbed)) return null;
+    console.log('passed update check');
     return setupMessage.edit(setupEmbed);
   };
 
   const inviteUpdates = invites.map(async (inviteId) => {
+    console.log('updating invite');
     const message = await getMessageByString(inviteId, client);
     if (!message) return null;
-    console.log('updating invite');
+    if (stringifyEmbed(message.embeds[0]) === stringifyEmbed(embed)) return null;
+    console.log(stringifyEmbed(message.embeds[0]));
+    console.log(stringifyEmbed(embed));
+    console.log('passed invite check');
     return message.edit(embed);
   });
 
@@ -44,12 +55,8 @@ module.exports = (draftSnapshot, client) => {
       const reaction = message.reactions.cache.find(({ emoji }) => emoji.toString() === e);
       if (!reaction) return true;
       const resolution = reaction.users.resolve(process.env.owner);
-      console.log('resolution', resolution?.id);
       return !resolution;
     });
-
-    console.log(toRemove);
-    console.log(toAdd);
 
     const removals = toRemove.map((r) => r.users.remove(process.env.owner));
     const additions = toAdd.map((r) => message.react(r));

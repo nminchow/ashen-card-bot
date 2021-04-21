@@ -1,6 +1,6 @@
 const { titleCase } = require('humanize-plus');
 const { MessageEmbed } = require('discord.js');
-const { fromPairs } = require('lodash');
+const { fromPairs, chunk } = require('lodash');
 const { warning, ready, pending } = require('../../constants/colors');
 const universalEmojiList = require('../../constants/universal-emoji-list');
 const { buildCardLink } = require('../../utility/urls');
@@ -35,10 +35,11 @@ module.exports = (id, playerId, { data: { cardsByStub } }, {
     const emojiMapping = fromPairs(phoenixborn.map((phoenixborn, index) => (
       [universalEmojiList[index], phoenixborn]
     )));
-    const options = Object.entries(emojiMapping).map(
+    const [firstSet, ...options] = chunk(Object.entries(emojiMapping).map(
       ([icon, phoenixborn]) => `${icon} ${buildCardLink(cardsByStub[phoenixborn])}`,
-    );
-    embed.addField('Remaining Phoenixborn:', options);
+    ), 5);
+    embed.addField('Remaining Phoenixborn:', firstSet);
+    options.forEach((option) => embed.addField('-', option));
     return { embed, emojiMapping: isTurn ? emojiMapping : {} };
   }
 

@@ -75,8 +75,8 @@ module.exports = async (draftSnapshot, user) => {
     if (message.channel instanceof TextChannel && index) {
       const embed = new MessageEmbed();
       embed.setDescription(
-        `${draft.name} has begun! Player order has been randomized and cards have been shuffled. '
-        + 'All participants have been DMed a message they will use to make card and dice selections.\n\n`
+        `${draft.name} has begun! Player order has been randomized and cards have been shuffled. `
+        + 'All participants have been DMed a message they will use to make card and dice selections.\n\n'
         + `[The embed above](${createMessageLink(message)}) will also show the status of the draft.`,
       );
 

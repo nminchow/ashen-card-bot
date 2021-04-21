@@ -24,7 +24,9 @@ module.exports = (id, {
   const description = `${name} ${endingText}`;
 
   // TODO: It'd be nice to have deck links here, but we don't have the precon ids on the cards list
-  const releaseNames = orderedReleases.map(({ name }) => name).join(', ');
+  const releaseNames = orderedReleases.filter(
+    ({ enabled }) => enabled,
+  ).map(({ name }) => name).join(', ');
 
   embed.addField('Releases in use:', `Master Set, ${releaseNames}\n\n`);
 
