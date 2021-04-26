@@ -16,4 +16,6 @@ module.exports = {
   'charm:class': '829563812293640202',
   'ceremonial:power': '829563812314480640',
   'ceremonial:class': '829563812302422076',
+  'time:power': '836390529280901140',
+  'time:class': '836390529394278420',
 };
