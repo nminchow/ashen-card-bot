@@ -8,7 +8,7 @@ module.exports = class ArtCommand extends Command {
       aliases: ['a'],
       group: 'cards',
       memberName: 'art',
-      description: 'Displays card art.',
+      description: 'Displays card art. Can also be invoked by surrounding card names in braces, ex: `{aradel}`.',
       args: [
         {
           key: 'text',
