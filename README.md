@@ -2,8 +2,7 @@
 
 This is a companion bot for the [Ashes Reborn](https://www.plaidhatgames.com/news/2020/08/06/ashes-reborn/) card game by Plaid Hat games.
 
-The bot's documentation can be accessed by adding it to a server and issuing the `!!help`
- command.
+The bot's documentation can be accessed by adding it to a server and issuing the `!!help` command.
 
 [invite link](https://discordapp.com/oauth2/authorize?client_id=828440100110073876&permissions=2147833920&scope=bot%20applications.commands)
 
@@ -33,3 +32,9 @@ Then, to start the bot...
 nvm use # (if using nvm)
 yarn start
 ```
+
+## Thanks
+
+This bot is largely a frontend for the [api.ashes.live](https://github.com/onecrayon/api.ashes.live), maintaned by @onecrayon. So massive props to him! 
+
+Also thanks to `@Tapeworm711` in the [ashes discord](https://discord.gg/UU5bduq) for their work on the rules section! 
