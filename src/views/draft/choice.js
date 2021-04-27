@@ -32,6 +32,21 @@ module.exports = (id, playerId, { data: { cardsByStub } }, {
     } else {
       embed.setDescription('Other players are choosing their phoenixborn.');
     }
+
+    // could go up to 20, but pad a bit to be safe
+    if (phoenixborn.length > 15 && !playerData.subSelection && isTurn) {
+      const emojiMapping = fromPairs(chunk(phoenixborn, 5).map((subset, index) => (
+        [universalEmojiList[index], subset]
+      )));
+
+      Object.entries(emojiMapping).forEach(([key, value]) => {
+        const options = value.map((phoenixborn) => buildCardLink(cardsByStub[phoenixborn])).join('\n');
+        embed.addField(`${key} Chose From Set`, options);
+      });
+
+      return { embed, emojiMapping };
+    }
+
     const emojiMapping = fromPairs(phoenixborn.map((phoenixborn, index) => (
       [universalEmojiList[index], phoenixborn]
     )));
