@@ -32,8 +32,6 @@ module.exports = (draftSnapshot, client) => {
     const message = await getMessageByString(inviteId, client);
     if (!message) return null;
     if (stringifyEmbed(message.embeds[0]) === stringifyEmbed(embed)) return null;
-    console.log(stringifyEmbed(message.embeds[0]));
-    console.log(stringifyEmbed(embed));
     console.log('passed invite check');
     return message.edit(embed);
   });

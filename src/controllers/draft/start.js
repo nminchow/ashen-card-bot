@@ -27,7 +27,13 @@ module.exports = async (draftSnapshot, user) => {
   ])));
 
   await Promise.all(draft.players.map(async (player) => {
-    const dm = await user.createDM(true);
+    const member = await user.client.users.fetch(player);
+    if (!member) {
+      const dm = await user.createDM(true);
+      dm.channel.send(`user ${player} was not found - you may need to recreate the draft`);
+      return;
+    }
+    const dm = await member.createDM(true);
     const embed = choice(draftSnapshot.ref.id, player, user.client, draft);
     const result = await dm.send(embed);
 

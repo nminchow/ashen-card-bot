@@ -33,8 +33,10 @@ module.exports = (id, playerId, { data: { cardsByStub } }, {
       embed.setDescription('Other players are choosing their phoenixborn.');
     }
 
+    const { subSelection } = playerData[playerId];
+
     // could go up to 20, but pad a bit to be safe
-    if (phoenixborn.length > 15 && !playerData.subSelection && isTurn) {
+    if (phoenixborn.length > 15 && !subSelection && isTurn) {
       const emojiMapping = fromPairs(chunk(phoenixborn, 5).map((subset, index) => (
         [universalEmojiList[index], subset]
       )));
@@ -47,7 +49,9 @@ module.exports = (id, playerId, { data: { cardsByStub } }, {
       return { embed, emojiMapping };
     }
 
-    const emojiMapping = fromPairs(phoenixborn.map((phoenixborn, index) => (
+    const set = subSelection || phoenixborn;
+
+    const emojiMapping = fromPairs(set.map((phoenixborn, index) => (
       [universalEmojiList[index], phoenixborn]
     )));
     const [firstSet, ...options] = chunk(Object.entries(emojiMapping).map(
